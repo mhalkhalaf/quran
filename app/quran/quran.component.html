@@ -1,0 +1,47 @@
+<!-- استدعاء تابع عرض البيانات على الواجهة  -->
+<form (ngSubmit)="MySearch()" [formGroup]="search">
+    <div class="row my-5">
+      <label class="col-1 ms-5">السورة</label>
+        <select required formControlName="chapter" class="col-1 text-center py-0 rounded-2">
+         <!-- عرض اسماء السور في القائمة المنسدلة والتعامل مع ارقام السور في قاعدة البيانات -->
+          @if (Surahs$ | async) {
+              @for (item of Surahs$| async; track Surahs$)
+              {
+                <option [value]="item.number">{{item.name}}</option>
+              }
+              }
+          </select>
+    </div>
+    <div class="row my-5">
+      <label class="col-1 ms-5">رقم الآية</label>
+        <select required formControlName="verse" class="col-1 text-center py-0 rounded-2">
+          <!-- عرض ارقام الآيات في قائمة منسدلة -->
+          @for (ayah of ayahs; track ayahs) { 
+            <option [value]="ayah">{{ayah}}</option>
+           }
+        </select>
+    </div>
+    <!-- إظهار زر البحث عندما يتم اختيار قيم في القائمة المسندلة -->
+    @if(search.get('verse')?.dirty && search.get('chapter')?.dirty){
+      <div class="row mb-3">
+        <button type="submit" class="col-2 ms-5 bg-light border">ابحث</button>
+      </div>
+    }
+    </form>
+
+  <!-- عرض البيانات عند استدعاء التابع -->
+@if(obs) {
+  <div class="m-5 mb-0  bg-light p-3 text-center text-success">
+    <h6 id="Ayah"></h6>
+    <h6 id="En"></h6>
+    <h6 id="Ar"></h6>
+    </div>
+}
+<!-- عرض رقم السورة ورقم الآية المختارة  -->
+<h6 class="text-center bg-light mt-0 ms-5 text-muted fst-italic fw-bold">Al-Quran - Chapter: {{search.get('chapter')?.value}},Verse: {{search.get('verse')?.value}}</h6>  
+
+
+
+
+
+  
